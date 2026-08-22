@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="{{ config.description }}"
+    >
+
+    <title>
+        {{ config.title }}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body
+    data-theme="{{ config.theme }}"
+>
+
+
+<div class="app-shell">
+
+
+    <!-- ============================= -->
+    <!-- HEADER -->
+    <!-- ============================= -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                {{ config.emoji }}
+            </div>
+
+
+            <div>
+
+                <h1>
+                    {{ config.title }}
+                </h1>
+
+                <p>
+                    {{ config.subtitle }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="top-actions">
+
+            <button
+                class="icon-btn"
+                id="themeBtn"
+                title="Toggle theme"
+            >
+                ☾
+            </button>
+
+
+            <button
+                class="clear-btn"
+                id="clearBtn"
+            >
+                Clear Chat
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ============================= -->
+    <!-- MAIN -->
+    <!-- ============================= -->
+
+    <main class="chat-layout">
+
+
+        <!-- ========================= -->
+        <!-- SIDEBAR -->
+        <!-- ========================= -->
+
+        <aside class="sidebar">
+
+
+            <div class="side-card">
+
+                <div>
+
+                    <span
+                        class="status-dot"
+                    ></span>
+
+                    <strong>
+                        AI Assistant
+                    </strong>
+
+                </div>
+
+                <p>
+                    Online and ready to help
+                </p>
+
+            </div>
+
+
+            <div class="side-card">
+
+                <h3>
+                    About
+                </h3>
+
+                <p>
+                    {{ config.description }}
+                </p>
+
+            </div>
+
+
+            <div class="side-card">
+
+                <h3>
+                    Quick Prompts
+                </h3>
+
+
+                <div
+                    id="quickPrompts"
+                    class="quick-list"
+                >
+
+                    {% for prompt in config.quick_prompts %}
+
+                    <button
+                        class="quick-btn"
+                        data-prompt="{{ prompt }}"
+                    >
+                        {{ prompt }}
+                    </button>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <div class="privacy-note">
+
+                <strong>
+                    🔒 Privacy
+                </strong>
+
+                <span>
+                    No authentication and no database.
+                    Chat history is kept only in the
+                    current browser session.
+                </span>
+
+            </div>
+
+
+        </aside>
+
+
+        <!-- ========================= -->
+        <!-- CHAT -->
+        <!-- ========================= -->
+
+        <section class="chat-card">
+
+
+            <div
+                id="messages"
+                class="messages"
+            >
+
+
+                <div class="welcome">
+
+
+                    <div class="welcome-icon">
+
+                        {{ config.emoji }}
+
+                    </div>
+
+
+                    <h2>
+
+                        Hi! I'm
+                        {{ config.title }}
+
+                    </h2>
+
+
+                    <p>
+
+                        {{ config.description }}
+
+                    </p>
+
+
+                    <div
+                        class="welcome-chips"
+                    >
+
+                        {% for prompt in
+                            config.quick_prompts[:3] %}
+
+                        <button
+                            class="chip"
+                            data-prompt="{{ prompt }}"
+                        >
+                            {{ prompt }}
+                        </button>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ===================== -->
+            <!-- TYPING -->
+            <!-- ===================== -->
+
+            <div
+                class="typing"
+                id="typing"
+                hidden
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+                <b>
+                    Thinking...
+                </b>
+
+            </div>
+
+
+            <!-- ===================== -->
+            <!-- INPUT -->
+            <!-- ===================== -->
+
+            <form
+                id="chatForm"
+                class="composer"
+            >
+
+
+                <textarea
+                    id="messageInput"
+                    rows="1"
+                    maxlength="6000"
+                    placeholder="Ask a career-related question..."
+                    autocomplete="off"
+                ></textarea>
+
+
+                <div
+                    class="composer-bottom"
+                >
+
+                    <span id="charCount">
+                        0 / 6000
+                    </span>
+
+
+                    <button
+                        class="send-btn"
+                        id="sendBtn"
+                        type="submit"
+                    >
+
+                        <span>
+                            Send
+                        </span>
+
+                        ➤
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ============================= -->
+    <!-- FOOTER -->
+    <!-- ============================= -->
+
+    <footer>
+
+        <span>
+            {{ config.title }}
+        </span>
+
+        <span>
+            Powered by Gemini + Flask
+        </span>
+
+    </footer>
+
+
+</div>
+
+
+<script>
+
+    window.CHATBOT_CONFIG =
+        {{ config | tojson }};
+
+</script>
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='script.js'
+    ) }}"
+></script>
+
+
+</body>
+
+</html>
